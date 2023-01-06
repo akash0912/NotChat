@@ -23,6 +23,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { Chat, OverlayProvider } from 'stream-chat-react-native';
 import { StreamChat } from 'stream-chat';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const App = () => {
@@ -30,7 +31,7 @@ const App = () => {
   const client = StreamChat.getInstance('r79xt77x5r64');
   const [userId, setUserId] = useState()
   useEffect(() => {
-    const client = StreamChat.getInstance('r79xt77x5r64');
+    getData()
 
     return async () => {
       await client.disconnectUser();
@@ -39,6 +40,30 @@ const App = () => {
   }, [])
   // const { bottom } = SafeAreaProvider();
 
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('username')
+    console.log("value", value);
+    if(value !== null) {
+      const tempvalue = JSON.parse(value)
+      setUserId(tempvalue.username)      
+
+      await client.connectUser(
+        {
+          id: tempvalue.username,
+          name: tempvalue.fullName,
+        //   role:'admin',
+          image: 'https://i.imgur.com/fR9Jz14.png',
+        },
+        client.devToken(tempvalue.username),
+      );
+    
+    }
+  } catch(e) {
+    console.log("error", e);
+  }
+}
   return (
     <SafeAreaProvider>
       <AuthContext.Provider value={{userId: userId, setUserId:setUserId}} >

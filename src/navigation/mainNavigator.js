@@ -18,10 +18,22 @@ const MyStack = () => {
     const client = StreamChat.getInstance('r79xt77x5r64');
 
     const { bottom } = useSafeAreaInsets();
-    const { userId } = useContext(AuthContext)
+    const { userId, setUserId } = useContext(AuthContext)
+
+    useEffect(()=>{
+        getData()
+    },[])
+const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('username')
+      if(value !== null) {
+        setUserId(value)      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+  
     return (
-
-
         <Stack.Navigator>
 
             {!userId ?
