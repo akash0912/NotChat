@@ -19,10 +19,11 @@ const Home = (props) => {
     console.log("item", item);
     const channel = client.channel('messaging', { members: [item.id, userId] })
     await channel.watch()
-    props.navigation.navigate('Chat', { channel: channel })
+    props.navigation.navigate('Chat', { channel: channel, user: item })
   }
   const onSelectChannelList = (channel) => {
     setVisible(false)
+    console.log("CHAnnel", channel);
     props.navigation.navigate('Chat', { channel: channel })
   }
   const getUsersList = async () => {

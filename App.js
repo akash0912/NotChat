@@ -46,7 +46,7 @@ const App = () => {
       <NavigationContainer>
         <GestureHandlerRootView style={{ flex: 1 }}>
 
-          <OverlayProvider bottomInset={-100}>
+          <OverlayProvider>
             <Chat client={client}>
 
               <StatusBar barStyle={'light-content'} />
